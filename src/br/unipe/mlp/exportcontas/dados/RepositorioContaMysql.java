@@ -8,11 +8,7 @@ import br.unipe.mlp.exportcontas.modelo.conta.Conta;
 
 public class RepositorioContaMysql extends RepositorioMysql implements
 		IRepositorioConta {
-	public RepositorioContaMysql(String localHospedado, String bancoDeDados,
-			String usuario, String senha) {
-		super(localHospedado, bancoDeDados, usuario, senha);
-	}
-
+	
 	@Override
 	public boolean incluir(Conta c) {
 		String consulta = "insert into contas values (default, ?, ?, ?, ? , ?)";
@@ -104,11 +100,9 @@ public class RepositorioContaMysql extends RepositorioMysql implements
 
 	}
 
-	public Conta resultSetToConta(ResultSet resultSet) {
+	private Conta resultSetToConta(ResultSet resultSet) {
 		Conta conta = new Conta();
-		IRepositorioCliente tbcliente = new RepositorioClienteMysql(
-				getLocalHospedado(), getBancoDeDados(), getUsuario(),
-				getSenha());
+		IRepositorioCliente tbcliente = new RepositorioClienteMysql();
 		try {
 			conta.setNumero(resultSet.getInt("numero"));
 			conta.setDataAbertura(resultSet.getDate("dataAbertura"));
@@ -116,12 +110,23 @@ public class RepositorioContaMysql extends RepositorioMysql implements
 			conta.setSaldo(resultSet.getDouble("saldo"));
 			conta.setResponsavel(tbcliente.pega(resultSet.getString("cpf")));
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return conta;
-
 	}
+	
+	public ResultSet dadosConsulta(String consulta){
+		try {
+			preparedStatement = connect.prepareStatement(consulta);
+			resultSet = preparedStatement.executeQuery();
+			resultSet.first();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resultSet;
+	}
+	
+	
+	
 
 }

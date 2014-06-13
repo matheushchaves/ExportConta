@@ -1,62 +1,53 @@
 package br.unipe.mlp.exportcontas.gui.jtable;
 
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
+import javax.swing.table.AbstractTableModel;
 
-public class ModeloJTableContas implements TableModel {
-	@Override
-	public void addTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
-		
-	}
+import br.unipe.mlp.exportcontas.dados.RepositorioContaMysql;
 
-	@Override
-	public Class<?> getColumnClass(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+@SuppressWarnings("serial")
+public class ModeloJTableContas extends AbstractTableModel {
+	private RepositorioContaMysql contas;
+	private ResultSet resultSet;
+	public ModeloJTableContas() {
+		contas = new RepositorioContaMysql();
+		resultSet = contas.dadosConsulta("Select numero,cpf,nome,saldo from contas,clientes where contas.cliente=clientes.cpf");
 	}
 
 	@Override
 	public int getColumnCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getColumnName(int arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		return 4;
 	}
 
 	@Override
 	public int getRowCount() {
-		// TODO Auto-generated method stub
-		return 0;
+		int rows = 0;
+		try {
+			resultSet.last();
+			rows = resultSet.getRow();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rows;
 	}
 
 	@Override
-	public Object getValueAt(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return null;
+	public Object getValueAt(int linha, int coluna) {
+		Object retorno = null;
+		try {
+			resultSet.absolute(linha+1);
+			retorno = resultSet.getObject(coluna+1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return retorno;
 	}
-
 	@Override
-	public boolean isCellEditable(int arg0, int arg1) {
-		// TODO Auto-generated method stub
-		return false;
+	public String getColumnName(int column) {
+		String[] nomeColuna = {"Nº da Conta","Cpf","Nome","Saldo"};
+		return  nomeColuna[column];
 	}
-
-	@Override
-	public void removeTableModelListener(TableModelListener arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void setValueAt(Object arg0, int arg1, int arg2) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }

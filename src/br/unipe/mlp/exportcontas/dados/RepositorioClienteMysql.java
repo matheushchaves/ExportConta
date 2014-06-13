@@ -9,11 +9,6 @@ import br.unipe.mlp.exportcontas.modelo.cliente.Cliente;
 public class RepositorioClienteMysql extends RepositorioContaMysql implements
 		IRepositorioCliente {
 
-	public RepositorioClienteMysql(String localHospedado, String bancoDeDados,
-			String usuario, String senha) {
-		super(localHospedado, bancoDeDados, usuario, senha);
-		// TODO Auto-generated constructor stub
-	}
 
 	@Override
 	public boolean incluir(Cliente cliente) {
@@ -89,7 +84,7 @@ public class RepositorioClienteMysql extends RepositorioContaMysql implements
 		return cliente;
 	}
 
-	public Cliente resultSetToCliente(ResultSet resultSet) {
+	private Cliente resultSetToCliente(ResultSet resultSet) {
 
 		Cliente cliente = new Cliente();
 

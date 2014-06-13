@@ -15,6 +15,7 @@ insert into contas (numero,saldo,dataAbertura,operacao,cliente) values (122101,0
 insert into contas (numero,saldo,dataAbertura,operacao,cliente) values (122102,0.00,'2000-01-02','001','13018244370');
 insert into contas (numero,saldo,dataAbertura,operacao,cliente) values (122103,0.00,'2000-01-03','001','47268404522');
 insert into contas (numero,saldo,dataAbertura,operacao,cliente) values (122104,0.00,'2000-01-04','001','92324841614');
+insert into contas (numero,saldo,dataAbertura,operacao,cliente) values (122105,0.00,'2000-05-04','002','92324841614');
 
 select * from contas where numero =;
 
