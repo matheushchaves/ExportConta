@@ -6,19 +6,21 @@ import java.sql.SQLException;
 import javax.swing.table.AbstractTableModel;
 
 import br.unipe.mlp.exportcontas.dados.RepositorioContaMysql;
+import br.unipe.mlp.exportcontas.gui.funcoes.G;
 
 @SuppressWarnings("serial")
 public class ModeloJTableContas extends AbstractTableModel {
 	private RepositorioContaMysql contas;
 	private ResultSet resultSet;
+	String[] nomeColuna = {"Nº da Conta","Cpf","Nome","Saldo"};
 	public ModeloJTableContas() {
 		contas = new RepositorioContaMysql();
 		resultSet = contas.dadosConsulta("Select numero,cpf,nome,saldo from contas,clientes where contas.cliente=clientes.cpf");
 	}
-
+	
 	@Override
 	public int getColumnCount() {
-		return 4;
+		return nomeColuna.length;
 	}
 
 	@Override
@@ -29,7 +31,7 @@ public class ModeloJTableContas extends AbstractTableModel {
 			rows = resultSet.getRow();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro ModeloJTableContas.getRowCount() - SQLException");
 		}
 		return rows;
 	}
@@ -39,15 +41,29 @@ public class ModeloJTableContas extends AbstractTableModel {
 		Object retorno = null;
 		try {
 			resultSet.absolute(linha+1);
-			retorno = resultSet.getObject(coluna+1);
+			
+			switch (coluna) {
+			case 0:
+				retorno = resultSet.getInt(1);	
+				break;
+			case 1:
+				retorno = G.mascaraCpf( resultSet.getString(2));
+				break;
+			case 2:
+				retorno = resultSet.getString(3);
+				break;
+			case 3:
+				retorno = G.dinheiroToString(resultSet.getDouble(4));
+				break;
+			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro ModeloJTableContas.getValueAt() - SQLException");
 		}
 		return retorno;
 	}
 	@Override
 	public String getColumnName(int column) {
-		String[] nomeColuna = {"Nº da Conta","Cpf","Nome","Saldo"};
-		return  nomeColuna[column];
+		
+		return  this.nomeColuna[column];
 	}
 }

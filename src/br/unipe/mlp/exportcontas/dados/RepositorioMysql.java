@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.unipe.mlp.exportcontas.gui.funcoes.G;
+
 public class RepositorioMysql {
 	private String conexao ;
 	protected java.sql.Connection connect = null;
@@ -21,10 +23,10 @@ public class RepositorioMysql {
 			Class.forName("com.mysql.jdbc.Driver");
 			connect = DriverManager.getConnection(conexao);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro RepositorioMysql() - ClassNotFoundException");
 			close();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro RepositorioMysql() - SQLException");
 			close();
 		} finally {
 
@@ -43,6 +45,16 @@ public class RepositorioMysql {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+	public ResultSet dadosConsulta(String consulta){
+		try {
+			preparedStatement = connect.prepareStatement(consulta);
+			resultSet = preparedStatement.executeQuery();
+			resultSet.first();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return resultSet;
 	}
 
 

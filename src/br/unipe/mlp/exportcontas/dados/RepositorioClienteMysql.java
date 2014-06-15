@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 import br.unipe.mlp.exportcontas.modelo.cliente.Cliente;
 
-public class RepositorioClienteMysql extends RepositorioContaMysql implements
+public class RepositorioClienteMysql extends RepositorioMysql implements
 		IRepositorioCliente {
 
 
@@ -70,12 +70,13 @@ public class RepositorioClienteMysql extends RepositorioContaMysql implements
 
 	@Override
 	public Cliente pega(String cpf) {
-		String consulta = "select cpf,nome,dataNascimento,sexo from clientes where cpf = "
-				+ cpf;
+			String consulta = "select cpf,nome,dataNascimento,sexo from clientes where cpf = '"
+				+ cpf+"'";
 		Cliente cliente = new Cliente();
 		try {
 			preparedStatement = connect.prepareStatement(consulta);
-			resultSet = preparedStatement.getResultSet();
+			resultSet = preparedStatement.executeQuery();
+			resultSet.first();
 			cliente = resultSetToCliente(resultSet);
 		} catch (SQLException e) {
 			e.printStackTrace();

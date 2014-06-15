@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import br.unipe.mlp.exportcontas.gui.funcoes.G;
 import br.unipe.mlp.exportcontas.modelo.conta.Conta;
 
 public class RepositorioContaMysql extends RepositorioMysql implements
@@ -22,7 +23,7 @@ public class RepositorioContaMysql extends RepositorioMysql implements
 			preparedStatement.setString(5, c.getResponsavel().getCpf());
 			nrolinhas = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro RepositorioContaMysql.incluir() - SQLException");			
 		} finally {
 			close();
 		}
@@ -38,7 +39,7 @@ public class RepositorioContaMysql extends RepositorioMysql implements
 			preparedStatement = connect.prepareStatement(consulta);
 			nrolinhas = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro RepositorioContaMysql.remover() - SQLException");
 		} finally {
 			close();
 		}
@@ -58,7 +59,7 @@ public class RepositorioContaMysql extends RepositorioMysql implements
 			preparedStatement.setInt(4, c.getNumero());
 			nrolinhas = preparedStatement.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro RepositorioContaMysql.atualizar() - SQLException");
 		} finally {
 			close();
 		}
@@ -73,9 +74,10 @@ public class RepositorioContaMysql extends RepositorioMysql implements
 		try {
 			preparedStatement = connect.prepareStatement(consulta);
 			resultSet = preparedStatement.executeQuery();
+			resultSet.first();
 			conta = resultSetToConta(resultSet);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro RepositorioContaMysql.pegar() - SQLException");
 		} finally {
 			close();
 		}
@@ -92,7 +94,7 @@ public class RepositorioContaMysql extends RepositorioMysql implements
 			resultSet = preparedStatement.executeQuery();
 			conta = resultSetToConta(resultSet);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro RepositorioContaMysql.pegaporcpf() - SQLException");
 		} finally {
 			close();
 		}
@@ -103,28 +105,20 @@ public class RepositorioContaMysql extends RepositorioMysql implements
 	private Conta resultSetToConta(ResultSet resultSet) {
 		Conta conta = new Conta();
 		IRepositorioCliente tbcliente = new RepositorioClienteMysql();
+		
 		try {
 			conta.setNumero(resultSet.getInt("numero"));
 			conta.setDataAbertura(resultSet.getDate("dataAbertura"));
 			conta.setOperacao(resultSet.getString("operacao"));
-			conta.setSaldo(resultSet.getDouble("saldo"));
-			conta.setResponsavel(tbcliente.pega(resultSet.getString("cpf")));
+			conta.setSaldo(resultSet.getFloat("saldo"));
+			
+			conta.setResponsavel(tbcliente.pega(resultSet.getString("cliente")));
 		} catch (SQLException e) {
-			e.printStackTrace();
+			G.msgErro("Informe esse erro ao desenvolvedor :"+e.getMessage(), "Erro RepositorioContaMysql.resultSetToConta() - SQLException");
 		}
 		return conta;
 	}
 	
-	public ResultSet dadosConsulta(String consulta){
-		try {
-			preparedStatement = connect.prepareStatement(consulta);
-			resultSet = preparedStatement.executeQuery();
-			resultSet.first();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return resultSet;
-	}
 	
 	
 	
