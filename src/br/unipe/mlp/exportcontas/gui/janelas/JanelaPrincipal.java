@@ -18,6 +18,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import br.unipe.mlp.exportcontas.gui.funcoes.G;
 import br.unipe.mlp.exportcontas.gui.jtable.ModeloJTableContas;
+import br.unipe.mlp.exportcontas.gui.relatorios.RelatorioContas;
 
 public class JanelaPrincipal implements ActionListener {
 
@@ -37,28 +38,25 @@ public class JanelaPrincipal implements ActionListener {
 		preparaJtable();
 		preparaBotoes();
 		preparaJanela();
-		
+
 	}
 
 	private void preparaBotoes() {
 
 		botaoRelatorio.setText("Relatório");
 		botaoRelatorio.setBounds(558, 305, 92, 23);
-	    botaoRelatorio.addActionListener(this);
+		botaoRelatorio.addActionListener(this);
 		janela.getContentPane().add(botaoRelatorio);
-		
+
 		botaoVisualizar.setText("Visualizar");
 		botaoVisualizar.setBounds(558, 331, 92, 23);
 		botaoVisualizar.addActionListener(this);
 		janela.getContentPane().add(botaoVisualizar);
-		
+
 		botaoSair.setText("Sair");
 		botaoSair.setBounds(558, 356, 92, 23);
 		botaoSair.addActionListener(this);
 		janela.getContentPane().add(botaoSair);
-		
-		
-		
 
 	}
 
@@ -109,7 +107,7 @@ public class JanelaPrincipal implements ActionListener {
 		janela.setTitle("ExportContas - Banco do Brasil");
 		janela.setBounds(100, 100, 673, 439);
 		janela.getContentPane().setLayout(null);
-		
+
 		janela.setBackground(Color.WHITE);
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setResizable(false);
@@ -129,20 +127,28 @@ public class JanelaPrincipal implements ActionListener {
 		}
 
 		if (e.getSource().equals(botaoRelatorio)) {
-            
+			if (table.getSelectedRow() > -1)
+				new RelatorioContas((int) table.getValueAt(
+						table.getSelectedRow(), 0));
+			else
+				G.msgAlert("Selecione uma conta na lista para Gerar Txt",
+						"Alerta");
+
 		}
 
 		if (e.getSource().equals(botaoVisualizar)) {
-			if (table.getSelectedRow()>-1)
-			new JanelaVisualizar((int) table.getValueAt(table.getSelectedRow(), 0));
+			if (table.getSelectedRow() > -1)
+				new JanelaVisualizar((int) table.getValueAt(
+						table.getSelectedRow(), 0));
 			else
-				G.msgAlert("Selecione uma conta na lista para visualização", "Alerta");
+				G.msgAlert("Selecione uma conta na lista para visualização",
+						"Alerta");
 		}
 
 		if (e.getSource().equals(botaoSair)) {
 			janela.dispose();
 			System.exit(0);
-			
+
 		}
 	}
 }
