@@ -5,6 +5,9 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.sql.Time;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -21,6 +24,7 @@ import br.unipe.mlp.exportcontas.gui.jtable.ModeloJTableContas;
 import br.unipe.mlp.exportcontas.gui.relatorios.RelatorioContas;
 
 public class JanelaPrincipal implements ActionListener {
+	private Timer timer= new Timer();
 
 	private JFrame janela = new JFrame();
 
@@ -38,7 +42,6 @@ public class JanelaPrincipal implements ActionListener {
 		preparaJtable();
 		preparaBotoes();
 		preparaJanela();
-
 	}
 
 	private void preparaBotoes() {
@@ -102,22 +105,32 @@ public class JanelaPrincipal implements ActionListener {
 		table.setVisible(true);
 	}
 
-	private void preparaJanela() {
+	private TimerTask atualizaJtable() {
+		TimerTask tarefa = new TimerTask() {
+			@Override
+			public void run() {
+					preparaJtable();
+			}
+		};
+		return tarefa;
 
+	}
+
+	private void preparaJanela() {
 		janela.setTitle("ExportContas - Banco do Brasil");
 		janela.setBounds(100, 100, 673, 439);
 		janela.getContentPane().setLayout(null);
-
 		janela.setBackground(Color.WHITE);
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setResizable(false);
 		janela.setLocationRelativeTo(null);
+		timer.schedule(atualizaJtable(),0, 2 * 1000);
 		janela.setVisible(true);
 
 	}
 
 	public static void main(String[] args) {
-		new JanelaPrincipal();
+		JanelaPrincipal programa = new JanelaPrincipal();
 	}
 
 	@Override
@@ -151,4 +164,5 @@ public class JanelaPrincipal implements ActionListener {
 
 		}
 	}
+
 }
