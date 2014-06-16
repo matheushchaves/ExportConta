@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 import br.unipe.mlp.exportcontas.dados.DbProperties;
+import br.unipe.mlp.exportcontas.gui.funcoes.G;
 
 public class JanelaConfigura implements ActionListener {
 
@@ -122,7 +123,7 @@ public class JanelaConfigura implements ActionListener {
 			odb.setUsuario(textFieldlogin.getText());
 			odb.setSenha(textFieldsenha.getText());
 			if (odb.grava())
-				
+				G.msgInfo("Dados gravados com Sucesso!", "Informação");				
 			janela.dispose();
 		}
 		if (e.getSource().equals(btnRetornar)){

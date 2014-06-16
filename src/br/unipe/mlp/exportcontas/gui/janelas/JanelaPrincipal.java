@@ -1,11 +1,11 @@
 package br.unipe.mlp.exportcontas.gui.janelas;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.sql.Time;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -124,13 +124,13 @@ public class JanelaPrincipal implements ActionListener {
 		janela.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		janela.setResizable(false);
 		janela.setLocationRelativeTo(null);
-		timer.schedule(atualizaJtable(),0, 2 * 1000);
+		timer.schedule(atualizaJtable(),0, 10 * 1000);
 		janela.setVisible(true);
 
 	}
 
 	public static void main(String[] args) {
-		JanelaPrincipal programa = new JanelaPrincipal();
+		new JanelaPrincipal();
 	}
 
 	@Override
