@@ -1,5 +1,0 @@
-+-----------------------------------------------------------------------------------------------+
-EXPORT CONTAS - EXTRATO DE CONTA DO BANCO DO BRASIL - 16/06/2014
-CPF:13018244370 NOME: Bruno Bernardo dos Santos DATA NASCIMENTO:02/04/1973 SEXO: Masculino
-NUMERO:122102 DATA ABERTURA:02/01/2000 TIPO:Conta Corrente  SALDO:R$ 1215,00
-+-----------------------------------------------------------------------------------------------+

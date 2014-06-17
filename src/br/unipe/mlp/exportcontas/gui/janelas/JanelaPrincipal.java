@@ -135,6 +135,7 @@ public class JanelaPrincipal implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
 		if (e.getSource().equals(botaoConfig)) {
 			new JanelaConfigura();
 		}
